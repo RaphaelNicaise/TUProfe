@@ -68,8 +68,8 @@ CREATE INDEX idx_profesores_nombre ON profesores (nombre);
 CREATE INDEX idx_profesores_apellido ON profesores (apellido);
 CREATE INDEX idx_profesores_mail ON profesores (mail);
 CREATE INDEX idx_materias_nombre_materia ON materias (nombre_materia);
-CREATE INDEX idx_materiaxprofesor_id_materia ON materiaxprofesor (id_materia);
-CREATE INDEX idx_materiaxprofesor_id_profesor ON materiaxprofesor (id_profesor);
+CREATE INDEX idx_profesores_materias_id_materia ON profesores_materias (id_materia);
+CREATE INDEX idx_profesores_materias_id_profesor ON profesores_materias (id_profesor);
 CREATE INDEX idx_feedbackProfesores_id_profesor ON feedbackProfesores (id_profesor);
 CREATE INDEX idx_feedbackProfesores_id_cliente ON feedbackProfesores (id_cliente);
 
