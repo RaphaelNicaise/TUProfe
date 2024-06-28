@@ -1,15 +1,17 @@
 from flask import Flask, jsonify
 import mysql.connector
+from config import SQLConfig
+
 app = Flask(__name__)
 
 def connect_to_db():
     try:
         return mysql.connector.MySQLConnection(
-            user='root',
-            password='',
-            host='localhost',
-            database='tuprofe',
-            port='3306')
+            user=SQLConfig.USER,
+            password=SQLConfig.PASSWORD,
+            host=SQLConfig.HOST,
+            database=SQLConfig.DATABASE,
+            port=SQLConfig.PORT)
                                                
     except mysql.connector.Error as err:
         print(f"{err}")
@@ -70,5 +72,22 @@ def get_clientes():
         }
     return jsonify(data)
 
+@app.route('/api/data/clientes/<id_cliente>', methods=['GET'])
+def get_cliente(id_cliente):
+    cursor.execute(f"select * from clientes where id_cliente = %s", (id_cliente,))
+    resultados = cursor.fetchall()
+    if resultados:
+        data = {
+            'message': 'Get de un cliente especifico',
+            'status': 'success',
+            'data': resultados
+        }
+    else:
+        data = {
+            'message': 'No se encontro el cliente',
+            'status': 'error',
+            'data': []
+        }
+    return jsonify(data)
 if __name__ == '__main__':
     app.run(debug=True)

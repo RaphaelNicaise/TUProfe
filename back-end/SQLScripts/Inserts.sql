@@ -42,3 +42,16 @@ CALL TUProfe.insert_materia('Metodología de la Investigación', '2003', 'Métod
 CALL TUProfe.insert_materia('Organización Contable de la Empresa', '2003', 'Principios de contabilidad, registros contables, análisis de estados financieros, contabilidad de costos, presupuestos.');
 CALL TUProfe.insert_materia('Organización Empresarial', '2003', 'Teoría general de sistemas, información, conocimiento y toma de decisiones, organización y empresa, sistemas administrativos y contables, planificación, organización, dirección y control, gestión por procesos.');
 CALL TUProfe.insert_materia('Legislación', '2003', 'Introducción al derecho y a las sociedades, legislación laboral, derecho informático y propiedad intelectual, responsabilidades civiles, penales y profesionales relacionadas con el desarrollo de software, actuación de los técnicos universitarios en programación durante los procesos judiciales, seguridad de la información.');
+
+
+-- INSERCIONES DE CLIENTES RANDOM
+CALL TUProfe.insert_cliente('John Doe', 'Doe', 'johndoe@example.com', '1234567890', 'Cliente regular');
+CALL TUProfe.insert_cliente('Jane Smith', 'Smith', 'janesmith@example.com', '0987654321', 'Cliente preferencial');
+CALL TUProfe.insert_cliente('Michael Johnson', 'Johnson', 'michaeljohnson@example.com', '9876543210', 'Cliente nuevo');
+CALL TUProfe.insert_cliente('Emily Williams', 'Williams', 'emilywilliams@example.com', '4567890123', 'Cliente frecuente');
+CALL TUProfe.insert_cliente('David Brown', 'Brown', 'davidbrown@example.com', '0123456789', 'Cliente corporativo');
+CALL TUProfe.insert_cliente('Sarah Jones', 'Jones', 'sarahjones@example.com', '6789012345', 'Cliente VIP');
+CALL TUProfe.insert_cliente('Daniel Davis', 'Davis', 'danieldavis@example.com', '2345678901', 'Cliente potencial');
+CALL TUProfe.insert_cliente('Olivia Miller', 'Miller', 'oliviamiller@example.com', '9012345678', 'Cliente leal');
+CALL TUProfe.insert_cliente('James Wilson', 'Wilson', 'jameswilson@example.com', '3456789012', 'Cliente recurrente');
+CALL TUProfe.insert_cliente('Sophia Taylor', 'Taylor', 'sophiataylor@example.com', '7890123456', 'Cliente exclusivo');
