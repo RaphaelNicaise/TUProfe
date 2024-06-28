@@ -38,21 +38,37 @@ def get_materia(id_materia):
     # Aquí puedes retornar datos simulados como ejemplo
     cursor.execute(f"select * from materias where id_materia = %s", (id_materia,))
     resultados = cursor.fetchall()
-    if len(resultados) == 0:
-        data = {
-            'message': 'No se encontro la materia',
-            'status': 'error',
-            'data': []
-        }
-    else:    
+    if resultados:
         data = {
             'message': 'Get de una materia con un plan especifico',
             'status': 'success',
             'data': resultados
         }
+    else:    
+        data = {
+            'message': 'No se encontro la materia',
+            'status': 'error',
+            'data': []
+        }
     return jsonify(data)
 
-
+@app.route('/api/data/clientes', methods=['GET'])
+def get_clientes():
+    cursor.execute('select * from clientes')
+    resultados = cursor.fetchall()
+    if resultados:
+        data = {
+            'message': 'Get de todos los clientes',
+            'status': 'success',
+            'data': resultados
+        }
+    else:
+        data = {
+            'message': 'No se encontraron clientes',
+            'status': 'error',
+            'data': []
+        }
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
