@@ -26,8 +26,12 @@ def hello():
 
 @app.route('/api/data/materias', methods=['GET'])
 def get_materias():
+    cnx = connect_to_db()
+    cursor = cnx.cursor(dictionary=True)
     cursor.execute("select * from materias")
     resultados = cursor.fetchall()
+    cursor.close()
+    cnx.close()
     data = {
         'message': 'get de todas las materias',
         'status': 'success',
@@ -38,8 +42,12 @@ def get_materias():
 @app.route('/api/data/materias/<id_materia>', methods=['GET'])
 def get_materia(id_materia):
     # Aquí puedes retornar datos simulados como ejemplo
+    cnx = connect_to_db()
+    cursor = cnx.cursor(dictionary=True)
     cursor.execute(f"select * from materias where id_materia = %s", (id_materia,))
     resultados = cursor.fetchall()
+    cursor.close()
+    cnx.close()
     if resultados:
         data = {
             'message': 'Get de una materia con un plan especifico',
@@ -56,8 +64,12 @@ def get_materia(id_materia):
 
 @app.route('/api/data/clientes', methods=['GET'])
 def get_clientes():
+    cnx = connect_to_db()
+    cursor = cnx.cursor(dictionary=True)
     cursor.execute('select * from clientes')
     resultados = cursor.fetchall()
+    cursor.close()
+    cnx.close()
     if resultados:
         data = {
             'message': 'Get de todos los clientes',
@@ -74,8 +86,12 @@ def get_clientes():
 
 @app.route('/api/data/clientes/<id_cliente>', methods=['GET'])
 def get_cliente(id_cliente):
+    cnx = connect_to_db()
+    cursor = cnx.cursor(dictionary=True)
     cursor.execute(f"select * from clientes where id_cliente = %s", (id_cliente,))
     resultados = cursor.fetchall()
+    cursor.close()
+    cnx.close()
     if resultados:
         data = {
             'message': 'Get de un cliente especifico',
@@ -89,5 +105,6 @@ def get_cliente(id_cliente):
             'data': []
         }
     return jsonify(data)
+
 if __name__ == '__main__':
     app.run(debug=True)
