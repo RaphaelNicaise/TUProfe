@@ -21,8 +21,22 @@ cnx = connect_to_db()
 cursor = cnx.cursor()
     
 @app.route('/')
-def hello():
-    return 'Api de TUProfe!'
+def rutas_menu():
+    # retornar todas las rutas posibles
+    return jsonify({
+        'message': 'Bienvenido a la API de la Universidad, la api esta funcionando correctamente',
+        'status': 'success',
+        'data': {
+            'rutas': [
+                '/api/data/materias',
+                '/api/data/materias/<id_materia>',
+                '/api/data/clientes',
+                '/api/data/clientes/<id_cliente>',
+                '/api/data/profesores',
+                '/api/data/profesores/<id_profesor>'
+            ]
+        }
+    })
 
 @app.route('/api/data/materias', methods=['GET'])
 def get_materias():
