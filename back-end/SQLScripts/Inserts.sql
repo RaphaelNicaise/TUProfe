@@ -55,3 +55,16 @@ CALL TUProfe.insert_cliente('Daniel Davis', 'Davis', 'danieldavis@example.com', 
 CALL TUProfe.insert_cliente('Olivia Miller', 'Miller', 'oliviamiller@example.com', '9012345678', 'Cliente leal');
 CALL TUProfe.insert_cliente('James Wilson', 'Wilson', 'jameswilson@example.com', '3456789012', 'Cliente recurrente');
 CALL TUProfe.insert_cliente('Sophia Taylor', 'Taylor', 'sophiataylor@example.com', '7890123456', 'Cliente exclusivo');
+
+-- INSERCIONES DE PROFESORES RANDOM
+-- CALL TUProfe.insert_profesor((nombre,apellido,mail,telefono,sobre_mi,RRSS)); 10 asi
+CALL TUProfe.insert_profesor('Juan', 'Pérez', 'juan.perez@example.com', '1234567890', 'Sobre mí...', 'Twitter.com/pepe');
+CALL TUProfe.insert_profesor('Ana', 'Gómez', 'ana.gomez@example.com', '0987654321', 'Sobre mí...', 'Facebook/pepe');
+CALL TUProfe.insert_profesor('Luis', 'Martínez', 'luis.martinez@example.com', '1122334455', 'Sobre mí...', 'Instagram/papa');
+CALL TUProfe.insert_profesor('Sofía', 'López', 'sofia.lopez@example.com', '5566778899', 'Sobre mí...', 'LinkedIn/sofia');
+CALL TUProfe.insert_profesor('Carlos', 'Hernández', 'carlos.hernandez@example.com', '2233445566', 'Sobre mí...', 'Twitter/carlos');
+CALL TUProfe.insert_profesor('Lucía', 'Jiménez', 'lucia.jimenez@example.com', '6677889900', 'Sobre mí...', 'Facebook/lucia');
+CALL TUProfe.insert_profesor('Marco', 'Ruiz', 'marco.ruiz@example.com', '7788990011', 'Sobre mí...', 'Instagram/marco');
+CALL TUProfe.insert_profesor('Elena', 'Morales', 'elena.morales@example.com', '8899001122', 'Sobre mí...', 'LinkedIn/elena');
+CALL TUProfe.insert_profesor('Pablo', 'Navarro', 'pablo.navarro@example.com', '9900112233', 'Sobre mí...', 'Twitter/Pablo');
+CALL TUProfe.insert_profesor('Marta', 'Díaz', 'marta.diaz@example.com', '0011223344', 'Sobre mí...', 'Facebook/Marta');

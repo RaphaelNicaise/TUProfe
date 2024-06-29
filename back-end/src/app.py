@@ -26,85 +26,162 @@ def hello():
 
 @app.route('/api/data/materias', methods=['GET'])
 def get_materias():
-    cnx = connect_to_db()
-    cursor = cnx.cursor(dictionary=True)
-    cursor.execute("select * from materias")
-    resultados = cursor.fetchall()
-    cursor.close()
-    cnx.close()
-    data = {
-        'message': 'get de todas las materias',
-        'status': 'success',
-        'data': resultados
-    }
-    return jsonify(data)
+    try:
+        cnx = connect_to_db()
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute("select * from materias")
+        resultados = cursor.fetchall()
+    except mysql.connector.Error as err:
+        print(f"{err}")
+    finally:
+        cursor.close()
+        cnx.close()
+        if resultados:
+            data = {
+                'message': 'get de todas las materias',
+                'status': 'success',
+                'data': resultados
+                } 
+            return jsonify(data)
+        else:
+            return jsonify({
+                'message': 'No se encontraron las materias',
+                'status': 'error',
+                'data': []
+                }), 404
+            
 
 @app.route('/api/data/materias/<id_materia>', methods=['GET'])
 def get_materia(id_materia):
     # Aquí puedes retornar datos simulados como ejemplo
-    cnx = connect_to_db()
-    cursor = cnx.cursor(dictionary=True)
-    cursor.execute(f"select * from materias where id_materia = %s", (id_materia,))
-    resultados = cursor.fetchall()
-    cursor.close()
-    cnx.close()
-    if resultados:
-        data = {
-            'message': 'Get de una materia con un plan especifico',
-            'status': 'success',
-            'data': resultados
-        }
-    else:    
-        data = {
-            'message': 'No se encontro la materia',
-            'status': 'error',
-            'data': []
-        }
-    return jsonify(data)
+    try:
+        cnx = connect_to_db()
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(f"select * from materias where id_materia = %s", (id_materia,))
+        resultados = cursor.fetchall()
+    except mysql.connector.Error as err:
+         print(f"{err}")
+    finally:    
+        cursor.close()
+        cnx.close()
+        if resultados:
+            data = {
+                'message': 'Get de una materia con un plan especifico',
+                'status': 'success',
+                'data': resultados
+            }
+            return jsonify(data)
+        else:    
+            return jsonify({
+                'message': 'No se encontró la materia',
+                'status': 'error',
+                'data': []
+                }), 404
+        
 
 @app.route('/api/data/clientes', methods=['GET'])
 def get_clientes():
-    cnx = connect_to_db()
-    cursor = cnx.cursor(dictionary=True)
-    cursor.execute('select * from clientes')
-    resultados = cursor.fetchall()
-    cursor.close()
-    cnx.close()
-    if resultados:
-        data = {
-            'message': 'Get de todos los clientes',
-            'status': 'success',
-            'data': resultados
-        }
-    else:
-        data = {
-            'message': 'No se encontraron clientes',
-            'status': 'error',
-            'data': []
-        }
-    return jsonify(data)
+    try:  
+        cnx = connect_to_db()
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute('select * from clientes')
+        resultados = cursor.fetchall()
+    except mysql.connector.Error as err:
+        print(f"{err}")
+    finally:
+        cursor.close()
+        cnx.close()
+        if resultados:
+            data = {
+                'message': 'Get de todos los clientes',
+                'status': 'success',
+                'data': resultados
+            }
+            return jsonify(data)
+        else:
+            return jsonify({
+                'message': 'No se encontraron clientes',
+                'status': 'error',
+                'data': []
+                }), 404
 
 @app.route('/api/data/clientes/<id_cliente>', methods=['GET'])
 def get_cliente(id_cliente):
-    cnx = connect_to_db()
-    cursor = cnx.cursor(dictionary=True)
-    cursor.execute(f"select * from clientes where id_cliente = %s", (id_cliente,))
-    resultados = cursor.fetchall()
-    cursor.close()
-    cnx.close()
-    if resultados:
-        data = {
-            'message': 'Get de un cliente especifico',
-            'status': 'success',
-            'data': resultados
-        }
-    else:
-        data = {
-            'message': 'No se encontro el cliente',
-            'status': 'error',
-            'data': []
-        }
-    return jsonify(data)
-
+    try:
+        cnx = connect_to_db()
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(f"select * from clientes where id_cliente = %s", (id_cliente,))
+        resultados = cursor.fetchall()
+    except mysql.connector.Error as err:
+        print(f"{err}")
+    finally:    
+        cursor.close()
+        cnx.close()
+        if resultados:
+            data = {
+                'message': 'Get de un cliente especifico',
+                'status': 'success',
+                'data': resultados
+            }
+            return jsonify(data)
+        else:
+            return jsonify({
+                'message': 'No se encontraron al cliente',
+                'status': 'error',
+                'data': []
+                }), 404
+       
+@app.route('/api/data/profesores', methods=['GET'])
+def get_profesores():
+    try:
+        cnx = connect_to_db()
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute('select * from profesores')
+        resultados = cursor.fetchall()
+    except mysql.connector.Error as err:
+        print(f"{err}")
+    finally:
+        cursor.close()
+        cnx.close()
+        if resultados:
+            data = {
+                'message': 'Get de todos los profesores',
+                'status': 'success',
+                'data': resultados
+            }
+            return jsonify(data)
+        else:
+            return jsonify({
+                'message': 'No se encontraron profesores',
+                'status': 'error',
+                'data': []
+                }), 404
+            
+@app.route('/api/data/profesores/<id_profesor>', methods=['GET'])
+def get_profesor(id_profesor):
+    try:
+        cnx = connect_to_db()
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(f"select * from profesores where id_profesor = %s", (id_profesor,))
+        resultados = cursor.fetchall()
+    except mysql.connector.Error as err:
+        print(f"{err}")
+    finally:
+        cursor.close()
+        cnx.close()
+        if resultados:
+            data = {
+                'message': 'Get de un profesor especifico',
+                'status': 'success',
+                'data': resultados
+            }
+            return jsonify(data)
+        else:
+            return jsonify({
+                'message': 'No se encontró al profesor',
+                'status': 'error',
+                'data': []
+                }), 404
+            
 if __name__ == '__main__':
     app.run(debug=True)

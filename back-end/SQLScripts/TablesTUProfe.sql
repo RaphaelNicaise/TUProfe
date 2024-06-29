@@ -52,8 +52,11 @@ create table feedbackProfesores (
     id_profesor int not null,
     id_cliente int not null,
     comentario text,
-    calificacion int check (calificacion <=5 and calificacion >= 0), -- se da el insert solo si esta entre 0 y 5
-	fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    calificacion_gral float check (calificacion <=5 and calificacion >= 0), -- se da el insert solo si esta entre 0 y 5
+	claridad_profesor_calif int check (claridad_profesor <=5 and claridad_profesor >= 0),
+    precio_profesor_calif  int check (precio_profesor_calif <= 5 and precio_profesor_calif >= 5),
+    disponibilidad_profesor_calif int check (disponibilidad_profesor_calif <= 5 and disponibilidad_profesor_calif >= 0),
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     primary key (id_feedback),
     constraint fk_profesor FOREIGN KEY (id_profesor) REFERENCES profesores(id_profesor),
     constraint fk_cliente FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)   
