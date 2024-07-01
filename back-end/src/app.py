@@ -3,7 +3,6 @@ import mysql.connector
 from config import SQLConfig
 
 app = Flask(__name__)
-
 def connect_to_db():
     try:
         return mysql.connector.MySQLConnection(

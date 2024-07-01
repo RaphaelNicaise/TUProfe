@@ -1,4 +1,6 @@
 delete from materias;
+delete from clientes;
+delete from profesores;
 
 -- INSERCIONES DE MATERIAS PLAN 2023 DE LA TUP FRBB, CON SUS RESPECTIVOS TEMAS.
 
@@ -43,7 +45,6 @@ CALL TUProfe.insert_materia('Organización Contable de la Empresa', '2003', 'Pri
 CALL TUProfe.insert_materia('Organización Empresarial', '2003', 'Teoría general de sistemas, información, conocimiento y toma de decisiones, organización y empresa, sistemas administrativos y contables, planificación, organización, dirección y control, gestión por procesos.');
 CALL TUProfe.insert_materia('Legislación', '2003', 'Introducción al derecho y a las sociedades, legislación laboral, derecho informático y propiedad intelectual, responsabilidades civiles, penales y profesionales relacionadas con el desarrollo de software, actuación de los técnicos universitarios en programación durante los procesos judiciales, seguridad de la información.');
 
-
 -- INSERCIONES DE CLIENTES RANDOM
 CALL TUProfe.insert_cliente('John Doe', 'Doe', 'johndoe@example.com', '1234567890', 'Cliente regular');
 CALL TUProfe.insert_cliente('Jane Smith', 'Smith', 'janesmith@example.com', '0987654321', 'Cliente preferencial');
@@ -51,6 +52,7 @@ CALL TUProfe.insert_cliente('Michael Johnson', 'Johnson', 'michaeljohnson@exampl
 CALL TUProfe.insert_cliente('Emily Williams', 'Williams', 'emilywilliams@example.com', '4567890123', 'Cliente frecuente');
 CALL TUProfe.insert_cliente('David Brown', 'Brown', 'davidbrown@example.com', '0123456789', 'Cliente corporativo');
 CALL TUProfe.insert_cliente('Sarah Jones', 'Jones', 'sarahjones@example.com', '6789012345', 'Cliente VIP');
+CALL TUProfe.insert_cliente('Daniel Davis', 'Davis', 'danieldavisAasdfa@example.com', '2345678901', 'Cliente potencial');
 CALL TUProfe.insert_cliente('Daniel Davis', 'Davis', 'danieldavis@example.com', '2345678901', 'Cliente potencial');
 CALL TUProfe.insert_cliente('Olivia Miller', 'Miller', 'oliviamiller@example.com', '9012345678', 'Cliente leal');
 CALL TUProfe.insert_cliente('James Wilson', 'Wilson', 'jameswilson@example.com', '3456789012', 'Cliente recurrente');
@@ -68,3 +70,36 @@ CALL TUProfe.insert_profesor('Marco', 'Ruiz', 'marco.ruiz@example.com', '7788990
 CALL TUProfe.insert_profesor('Elena', 'Morales', 'elena.morales@example.com', '8899001122', 'Sobre mí...', 'LinkedIn/elena');
 CALL TUProfe.insert_profesor('Pablo', 'Navarro', 'pablo.navarro@example.com', '9900112233', 'Sobre mí...', 'Twitter/Pablo');
 CALL TUProfe.insert_profesor('Marta', 'Díaz', 'marta.diaz@example.com', '0011223344', 'Sobre mí...', 'Facebook/Marta');
+
+
+-- INSERTAR PROFESORES A MATERIAS
+-- CALL TUProfe.insert_profesor_a_materia(id_profesor_existente, id_materia_existente); 
+CALL TUProfe.insert_profesor_a_materia(1, 1);
+CALL TUProfe.insert_profesor_a_materia(2, 2);
+CALL TUProfe.insert_profesor_a_materia(3, 3);
+CALL TUProfe.insert_profesor_a_materia(4, 4);
+CALL TUProfe.insert_profesor_a_materia(5, 5);
+CALL TUProfe.insert_profesor_a_materia(6, 6);
+CALL TUProfe.insert_profesor_a_materia(7, 7);
+CALL TUProfe.insert_profesor_a_materia(8, 8);
+CALL TUProfe.insert_profesor_a_materia(9, 9);
+CALL TUProfe.insert_profesor_a_materia(10, 10);
+CALL TUProfe.insert_profesor_a_materia(1, 11);
+CALL TUProfe.insert_profesor_a_materia(2, 12);
+CALL TUProfe.insert_profesor_a_materia(3, 13);
+CALL TUProfe.insert_profesor_a_materia(4, 14);
+CALL TUProfe.insert_profesor_a_materia(5, 15);
+CALL TUProfe.insert_profesor_a_materia(6, 16);
+CALL TUProfe.insert_profesor_a_materia(7, 17);
+CALL TUProfe.insert_profesor_a_materia(8, 18);
+CALL TUProfe.insert_profesor_a_materia(9, 19);
+CALL TUProfe.insert_profesor_a_materia(10, 20);
+
+
+-- INSERTAR FEEDBACKS DE PROFESORES
+-- CALL TUProfe.sendfeedback(id_profesor, id_cliente, comentario, calificacion_gral, claridad_profesor_calif, precio_profesor_calif, disponibilidad_profesor_calif);
+CALL TUProfe.sendfeedback(1, 1, 'Excelente profesor, muy recomendable.', 5, 5, 5);
+CALL TUProfe.sendfeedback(2, 2, 'Muy buen profesor, excelente trato.', 4, 5, 4);
+CALL TUProfe.sendfeedback(3, 3, 'Muy buen profesor, excelente trato.', 3, 5, 3);
+CALL TUProfe.sendfeedback(4, 4, 'Muy poco contenido de calidad pero excelente trato.', 4, 2, 4);
+CALL TUProfe.sendfeedback(1,2,'Buen trato',4,3,1);
