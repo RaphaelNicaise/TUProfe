@@ -52,17 +52,11 @@ def get_materias():
         cnx.close()
         if resultados:
             data = {
-                'message': 'get de todas las materias',
-                'status': 'success',
-                'data': resultados
-                } 
+                'message': 'get de todas las materias','status': 'success','data': resultados} 
             return jsonify(data)
         else:
             return jsonify({
-                'message': 'No se encontraron las materias',
-                'status': 'error',
-                'data': []
-                }), 404
+                'message': 'No se encontraron las materias', 'status': 'error','data': []}), 404
             
 
 @app.route('/api/data/materias/<id_materia>', methods=['GET'])
@@ -80,17 +74,12 @@ def get_materia(id_materia):
         cnx.close()
         if resultados:
             data = {
-                'message': 'Get de una materia con un plan especifico',
-                'status': 'success',
-                'data': resultados
+                'message': 'Get de una materia con un plan especifico','status': 'success','data': resultados
             }
             return jsonify(data)
         else:    
             return jsonify({
-                'message': 'No se encontró la materia',
-                'status': 'error',
-                'data': []
-                }), 404
+                'message': 'No se encontró la materia','status': 'error','data': []}), 404
         
 
 @app.route('/api/data/clientes', methods=['GET', 'POST'])
@@ -136,22 +125,18 @@ def clientes():
             cnx.commit()
         
             return jsonify({
-                'message': 'Cliente creado exitosamente',
-                'status': 'success',
-                'data': data
-            }), 201 # CODIGO 201 DE RESPUESTA DE EXITO Y CREACION DE RECURSO
+                'message': 'Cliente creado exitosamente','status': 'success','data': data}), 201 
+            # CODIGO 201 DE RESPUESTA DE EXITO Y CREACION DE RECURSO
         
         except mysql.connector.Error as err:
             print(f"Error al crear cliente: {err}")
             return jsonify({
-                'message': 'Error al crear cliente',
-                'status': 'error',
-                'data': []
-            }), 500
+                'message': 'Error al crear cliente','status': 'error','data': []}), 500
         
         finally:
             cursor.close()
             cnx.close()        
+
             
 @app.route('/api/data/clientes/<id_cliente>', methods=['GET'])
 def get_cliente(id_cliente):
@@ -167,17 +152,13 @@ def get_cliente(id_cliente):
         cnx.close()
         if resultados:
             data = {
-                'message': 'Get de un cliente especifico',
-                'status': 'success',
-                'data': resultados
+                'message': 'Get de un cliente especifico','status': 'success','data': resultados
             }
             return jsonify(data)
         else:
             return jsonify({
-                'message': 'No se encontraron al cliente',
-                'status': 'error',
-                'data': []
-                }), 404
+                'message': 'No se encontraron al cliente','status': 'error','data': []}), 404
+
        
 @app.route('/api/data/profesores', methods=['GET'])
 def get_profesores():
@@ -200,11 +181,9 @@ def get_profesores():
             return jsonify(data)
         else:
             return jsonify({
-                'message': 'No se encontraron profesores',
-                'status': 'error',
-                'data': []
-                }), 404
-            
+                'message': 'No se encontraron profesores','status': 'error','data': []}), 404
+
+    
 @app.route('/api/data/profesores/<id_profesor>', methods=['GET'])
 def get_profesor(id_profesor):
     try:
@@ -219,19 +198,44 @@ def get_profesor(id_profesor):
         cnx.close()
         if resultados:
             data = {
-                'message': 'Get de un profesor especifico',
-                'status': 'success',
-                'data': resultados
+                'message': 'Get de un profesor especifico','status': 'success','data': resultados
             }
             return jsonify(data)
         else:
             return jsonify({
-                'message': 'No se encontró al profesor',
-                'status': 'error',
-                'data': []
-                }), 404
-            
-            
+                'message': 'No se encontró al profesor','status': 'error','data': []}), 404
+
+
+# ENDPOINT PARA MANDAR FEEDBACK DE UN PROFESOR, MEDIANTE UN POST
+@app.route('/api/data/sendfeedback', methods=['POST'])
+def sendfeedback():
+    try:
+        cnx = connect_to_db()
+        cursor = cnx.cursor(dictionary=True)
+        if request.headers['Content-Type'] != 'application/json':
+            return jsonify({
+                'message': 'Tipo de contenido no soportado. Asegúrate de enviar JSON.','status': 'error'}), 415
+        # OBTENEMOS LOS DATOS DE REACT
+        data = request.json
+        id_profesor = data.get('id_profesor', '')
+        id_cliente = data.get('id_cliente', '')
+        comentario = data.get('comentario', '')
+        claridad_profesor_calif = data.get('claridad_profesor_calif', '')
+        precio_profesor_calif = data.get('precio_profesor_calif', '')
+        disponibilidad_profesor_calif = data.get('disponibilidad_profesor_calif', '')
+        cursor.callproc('sendfeedback', (id_profesor, id_cliente, comentario, claridad_profesor_calif, precio_profesor_calif, disponibilidad_profesor_calif))    
+        cnx.commit()
+        return jsonify({
+            'message': 'Feedback enviado exitosamente','status': 'success','data': data}), 201
+    
+    except mysql.connector.Error as err:
+        print(f"Error al enviar feedback: {err}")
+        return jsonify({
+            'message': 'Error al enviar feedback','status': 'error','data': []}), 500
+    finally:
+        cursor.close()
+        cnx.close()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
