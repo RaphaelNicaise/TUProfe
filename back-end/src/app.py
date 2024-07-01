@@ -11,7 +11,8 @@ def connect_to_db():
             password=SQLConfig.PASSWORD,
             host=SQLConfig.HOST,
             database=SQLConfig.DATABASE,
-            port=SQLConfig.PORT)
+            port=SQLConfig.PORT
+        )
                                                
     except mysql.connector.Error as err:
         print(f"{err}")

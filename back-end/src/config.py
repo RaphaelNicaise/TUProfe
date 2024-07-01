@@ -1,4 +1,5 @@
 # config.py
+from flask import Flask, jsonify
 
 class SQLConfig:
     HOST = 'localhost'
