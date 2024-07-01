@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import mysql.connector
 from config import SQLConfig
 
@@ -93,32 +93,66 @@ def get_materia(id_materia):
                 }), 404
         
 
-@app.route('/api/data/clientes', methods=['GET'])
-def get_clientes():
-    try:  
-        cnx = connect_to_db()
-        cursor = cnx.cursor(dictionary=True)
-        cursor.execute('select * from clientes')
-        resultados = cursor.fetchall()
-    except mysql.connector.Error as err:
-        print(f"{err}")
-    finally:
-        cursor.close()
-        cnx.close()
-        if resultados:
-            data = {
-                'message': 'Get de todos los clientes',
-                'status': 'success',
-                'data': resultados
-            }
-            return jsonify(data)
-        else:
+@app.route('/api/data/clientes', methods=['GET', 'POST'])
+def clientes():
+    if request.method == 'GET':
+        try:  
+            cnx = connect_to_db()
+            cursor = cnx.cursor(dictionary=True)
+            cursor.execute('select * from clientes')
+            resultados = cursor.fetchall()
+        except mysql.connector.Error as err:
+            print(f"{err}")
+        finally:
+            cursor.close()
+            cnx.close()
+            if resultados:
+                data = {
+                    'message': 'Get de todos los clientes','status': 'success','data': resultados
+                }
+                return jsonify(data)
+            else:
+                return jsonify({
+                    'message': 'No se encontraron clientes','status': 'error', 'data': []}), 404
+                
+    elif request.method == 'POST': # INSERTAR CLIENTE
+        try:
+            cnx = connect_to_db()
+            cursor = cnx.cursor(dictionary=True)
+            if request.headers['Content-Type'] != 'application/json': # CHEQUEA QUE EL CONTENT TYPE SEA JSON
+                return jsonify({
+                'message': 'Tipo de contenido no soportado. Asegúrate de enviar JSON.',
+                'status': 'error'
+                    }), 415
+                
+            data = request.json # RECOLECTA LOS DATOS DEL JSON, Y LOS GUARDA EN VARIABLES
+            nombre = data.get('nombre', '')
+            apellido = data.get('apellido', '')
+            correo = data.get('correo', '')
+            telefono = data.get('telefono', '')
+            descripcion = data.get('descripcion', '')  
+            # LLAMA AL PROCEDIMIENTO INSERT_CLIENTE, Y LE PASA LOS DATOS
+            cursor.callproc('insert_cliente', (nombre, apellido, correo, telefono, descripcion)) 
+            cnx.commit()
+        
             return jsonify({
-                'message': 'No se encontraron clientes',
+                'message': 'Cliente creado exitosamente',
+                'status': 'success',
+                'data': data
+            }), 201 # CODIGO 201 DE RESPUESTA DE EXITO Y CREACION DE RECURSO
+        
+        except mysql.connector.Error as err:
+            print(f"Error al crear cliente: {err}")
+            return jsonify({
+                'message': 'Error al crear cliente',
                 'status': 'error',
                 'data': []
-                }), 404
-
+            }), 500
+        
+        finally:
+            cursor.close()
+            cnx.close()        
+            
 @app.route('/api/data/clientes/<id_cliente>', methods=['GET'])
 def get_cliente(id_cliente):
     try:
@@ -197,5 +231,7 @@ def get_profesor(id_profesor):
                 'data': []
                 }), 404
             
+            
+
 if __name__ == '__main__':
     app.run(debug=True)
