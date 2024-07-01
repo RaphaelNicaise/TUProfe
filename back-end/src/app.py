@@ -28,12 +28,13 @@ def rutas_menu():
         'status': 'success',
         'data': {
             'rutas': [
-                '/api/data/materias',
-                '/api/data/materias/<id_materia>',
-                '/api/data/clientes',
+                '/api/data/materias', # GET Y POST
+                '/api/data/materias/<id_materia>', # GET
+                '/api/data/clientes', # GET Y POST
                 '/api/data/clientes/<id_cliente>',
-                '/api/data/profesores',
-                '/api/data/profesores/<id_profesor>'
+                '/api/data/profesores', # GET
+                '/api/data/profesores/<id_profesor>', # GET
+                '/api/data/sendfeedback' # POST
             ]
         }
     })
@@ -110,9 +111,7 @@ def clientes():
             cursor = cnx.cursor(dictionary=True)
             if request.headers['Content-Type'] != 'application/json': # CHEQUEA QUE EL CONTENT TYPE SEA JSON
                 return jsonify({
-                'message': 'Tipo de contenido no soportado. Asegúrate de enviar JSON.',
-                'status': 'error'
-                    }), 415
+                'message': 'Tipo de contenido no soportado. Asegúrate de enviar JSON.','status': 'error'}), 415
                 
             data = request.json # RECOLECTA LOS DATOS DEL JSON, Y LOS GUARDA EN VARIABLES
             nombre = data.get('nombre', '')
@@ -176,8 +175,7 @@ def get_profesores():
             data = {
                 'message': 'Get de todos los profesores',
                 'status': 'success',
-                'data': resultados
-            }
+                'data': resultados}
             return jsonify(data)
         else:
             return jsonify({
@@ -215,6 +213,7 @@ def sendfeedback():
         if request.headers['Content-Type'] != 'application/json':
             return jsonify({
                 'message': 'Tipo de contenido no soportado. Asegúrate de enviar JSON.','status': 'error'}), 415
+        
         # OBTENEMOS LOS DATOS DE REACT
         data = request.json
         id_profesor = data.get('id_profesor', '')
@@ -222,7 +221,7 @@ def sendfeedback():
         comentario = data.get('comentario', '')
         claridad_profesor_calif = data.get('claridad_profesor_calif', '')
         precio_profesor_calif = data.get('precio_profesor_calif', '')
-        disponibilidad_profesor_calif = data.get('disponibilidad_profesor_calif', '')
+        disponibilidad_profesor_calif = data.get('disponibilidad_profesor_calif', '') # el procedimiento recibe estos datos, y despues calcula la califiacion general, y lo inserta
         cursor.callproc('sendfeedback', (id_profesor, id_cliente, comentario, claridad_profesor_calif, precio_profesor_calif, disponibilidad_profesor_calif))    
         cnx.commit()
         return jsonify({
@@ -235,7 +234,6 @@ def sendfeedback():
     finally:
         cursor.close()
         cnx.close()
-
 
 if __name__ == '__main__':
     app.run(debug=True)
