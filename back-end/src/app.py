@@ -1,25 +1,29 @@
 from flask import Flask, jsonify, request
 import mysql.connector
+from mysql.connector import pooling
 from config import SQLConfig
 
+
 app = Flask(__name__)
-def connect_to_db():
+
+dbconfig = {
+    "database": SQLConfig.DATABASE,
+    "user": SQLConfig.USER,
+    "password": SQLConfig.PASSWORD,
+    "host": SQLConfig.HOST,
+    "port": SQLConfig.PORT,
+}
+# CREAR UN POOL DE CONEXIONES PARA EVITAR QUE SE CREEN CONEXIONES CADA VEZ QUE SE HACE UNA PETICION
+cnxpool = mysql.connector.pooling.MySQLConnectionPool(pool_name="mypool", pool_size=5, **dbconfig)
+
+def get_connection():
     try:
-        return mysql.connector.MySQLConnection(
-            user=SQLConfig.USER,
-            password=SQLConfig.PASSWORD,
-            host=SQLConfig.HOST,
-            database=SQLConfig.DATABASE,
-            port=SQLConfig.PORT
-        )
-                                               
+        return cnxpool.get_connection()                                       
     except mysql.connector.Error as err:
         print(f"{err}")
         return None
 
-cnx = connect_to_db()
-cursor = cnx.cursor()
-    
+
 @app.route('/')
 def rutas_menu():
     # retornar todas las rutas posibles
@@ -42,7 +46,7 @@ def rutas_menu():
 @app.route('/api/data/materias', methods=['GET'])
 def get_materias():
     try:
-        cnx = connect_to_db()
+        cnx = get_connection()
         cursor = cnx.cursor(dictionary=True)
         cursor.execute("select * from materias")
         resultados = cursor.fetchall()
@@ -64,7 +68,7 @@ def get_materias():
 def get_materia(id_materia):
     # Aquí puedes retornar datos simulados como ejemplo
     try:
-        cnx = connect_to_db()
+        cnx = get_connection()
         cursor = cnx.cursor(dictionary=True)
         cursor.execute(f"select * from materias where id_materia = %s", (id_materia,))
         resultados = cursor.fetchall()
@@ -87,7 +91,7 @@ def get_materia(id_materia):
 def clientes():
     if request.method == 'GET':
         try:  
-            cnx = connect_to_db()
+            cnx = get_connection()
             cursor = cnx.cursor(dictionary=True)
             cursor.execute('select * from clientes')
             resultados = cursor.fetchall()
@@ -107,7 +111,7 @@ def clientes():
                 
     elif request.method == 'POST': # INSERTAR CLIENTE
         try:
-            cnx = connect_to_db()
+            cnx = get_connection()
             cursor = cnx.cursor(dictionary=True)
             if request.headers['Content-Type'] != 'application/json': # CHEQUEA QUE EL CONTENT TYPE SEA JSON
                 return jsonify({
@@ -140,7 +144,7 @@ def clientes():
 @app.route('/api/data/clientes/<id_cliente>', methods=['GET'])
 def get_cliente(id_cliente):
     try:
-        cnx = connect_to_db()
+        cnx = get_connection()
         cursor = cnx.cursor(dictionary=True)
         cursor.execute(f"select * from clientes where id_cliente = %s", (id_cliente,))
         resultados = cursor.fetchall()
@@ -162,7 +166,7 @@ def get_cliente(id_cliente):
 @app.route('/api/data/profesores', methods=['GET'])
 def get_profesores():
     try:
-        cnx = connect_to_db()
+        cnx = get_connection()
         cursor = cnx.cursor(dictionary=True)
         cursor.execute('select * from profesores')
         resultados = cursor.fetchall()
@@ -185,7 +189,7 @@ def get_profesores():
 @app.route('/api/data/profesores/<id_profesor>', methods=['GET'])
 def get_profesor(id_profesor):
     try:
-        cnx = connect_to_db()
+        cnx = get_connection()
         cursor = cnx.cursor(dictionary=True)
         cursor.execute(f"select * from profesores where id_profesor = %s", (id_profesor,))
         resultados = cursor.fetchall()
@@ -208,7 +212,7 @@ def get_profesor(id_profesor):
 @app.route('/api/data/sendfeedback', methods=['POST'])
 def sendfeedback():
     try:
-        cnx = connect_to_db()
+        cnx = get_connection()
         cursor = cnx.cursor(dictionary=True)
         if request.headers['Content-Type'] != 'application/json':
             return jsonify({
@@ -216,6 +220,7 @@ def sendfeedback():
         
         # OBTENEMOS LOS DATOS DE REACT
         data = request.json
+        
         id_profesor = data.get('id_profesor', '')
         id_cliente = data.get('id_cliente', '')
         comentario = data.get('comentario', '')
@@ -235,5 +240,6 @@ def sendfeedback():
         cursor.close()
         cnx.close()
 
+# 
 if __name__ == '__main__':
     app.run(debug=True)
