@@ -24,27 +24,6 @@ CALL TUProfe.insert_materia('Legislación', '2023', 'Introducción al derecho y 
 
 -- INSERCIOES DE MATERIAS PLAN 2003 DE LA TUP FRBB, CON SUS RESPECTIVOS TEMAS
 
-CALL TUProfe.insert_materia('Matemática', '2003', 'Números reales, funciones, límites, derivadas, integrales, álgebra lineal, ecuaciones diferenciales.');
-CALL TUProfe.insert_materia('Estadística', '2003', 'Datos estadísticos, análisis combinatorio, estadística descriptiva, teoría de las probabilidades, variables aleatorias, distribuciones de probabilidad, teoría del muestreo, estimación.');
-CALL TUProfe.insert_materia('Programación I', '2003', 'Introducción a los distintos paradigmas de programación, programación imperativa, concepto de algoritmo, estrategias de resolución de problemas, tipos de datos, variables y constantes, estructuras de control básicas, estructuras de datos, abstracciones con procedimientos y funciones, recursividad, algoritmos de búsqueda, recorrido y ordenamiento.');
-CALL TUProfe.insert_materia('Sistemas de Procesamiento de Base de Datos', '2003', 'Modelo conceptual de datos, modelo relacional, sistema de gestión de bases de datos relacional, diseño de base de datos, sentencias SQL para insertar, eliminar y actualizar datos, análisis de consistencia e integridad de datos, seguridad y privacidad en bases de datos.');
-CALL TUProfe.insert_materia('Laboratorio de Computación I', '2003', 'Prácticas de programación básica, manejo de entornos de desarrollo, depuración de código, implementación de algoritmos simples.');
-CALL TUProfe.insert_materia('Programación II', '2003', 'Principios de la orientación a objetos, clases, atributos y métodos, constructores, enumeraciones, arreglos y colecciones, acceso a datos, gestión de altas, bajas, modificación y consultas (ABMC), introducción a servicios web.');
-CALL TUProfe.insert_materia('Arquitectura y Sistemas Operativos', '2003', 'Arquitectura de computadoras, estructura, características y clasificación de sistemas operativos, planificación e hilos en procesos, comunicación y sincronización entre procesos, gestión de memoria, sistemas de archivos, gestión de entrada/salida, interrupciones, introducción a las redes de datos, virtualización.');
-CALL TUProfe.insert_materia('Laboratorio de Computación II', '2003', 'Prácticas avanzadas de programación, manejo de estructuras de datos complejas, algoritmos de ordenamiento y búsqueda, implementación de proyectos pequeños.');
-CALL TUProfe.insert_materia('Programación III', '2003', 'Desarrollo de aplicaciones distribuidas, programación concurrente, programación paralela, diseño y análisis de algoritmos, optimización de rendimiento.');
-CALL TUProfe.insert_materia('Elementos de Investigación Operativa', '2003', 'Introducción a la investigación operativa, técnicas de optimización, programación lineal, teoría de colas, simulación.');
-CALL TUProfe.insert_materia('Laboratorio de Computación III', '2003', 'Implementación de proyectos complejos, integración de sistemas, uso avanzado de herramientas de desarrollo, pruebas y depuración extensivas.');
-CALL TUProfe.insert_materia('Metodología de Sistemas I', '2003', 'Análisis y diseño de sistemas de información, metodologías de desarrollo, modelos de ciclo de vida, herramientas CASE, documentación y especificaciones.');
-CALL TUProfe.insert_materia('Diseño y Administración de Base de Datos', '2003', 'Gestión avanzada de bases de datos, transacciones, concurrencia, recuperación ante fallos, optimización de consultas, administración de bases de datos, técnicas de replicación y particionamiento.');
-CALL TUProfe.insert_materia('Laboratorio de Computación IV', '2003', 'Desarrollo de aplicaciones integrales, implementación de sistemas completos, pruebas y validación, documentación de proyectos.');
-CALL TUProfe.insert_materia('Inglés I', '2003', 'Lectura y comprensión de textos técnicos en inglés, vocabulario técnico, estructuras gramaticales, redacción de informes y documentos técnicos.');
-CALL TUProfe.insert_materia('Inglés II', '2003', 'Avanzado de lectura y comprensión de textos técnicos en inglés, vocabulario técnico avanzado, estructuras gramaticales complejas, redacción avanzada de informes y documentos técnicos, presentación oral de temas técnicos.');
-CALL TUProfe.insert_materia('Metodología de la Investigación', '2003', 'Métodos y técnicas de investigación, diseño de proyectos de investigación, recolección y análisis de datos, presentación de resultados.');
-CALL TUProfe.insert_materia('Organización Contable de la Empresa', '2003', 'Principios de contabilidad, registros contables, análisis de estados financieros, contabilidad de costos, presupuestos.');
-CALL TUProfe.insert_materia('Organización Empresarial', '2003', 'Teoría general de sistemas, información, conocimiento y toma de decisiones, organización y empresa, sistemas administrativos y contables, planificación, organización, dirección y control, gestión por procesos.');
-CALL TUProfe.insert_materia('Legislación', '2003', 'Introducción al derecho y a las sociedades, legislación laboral, derecho informático y propiedad intelectual, responsabilidades civiles, penales y profesionales relacionadas con el desarrollo de software, actuación de los técnicos universitarios en programación durante los procesos judiciales, seguridad de la información.');
-
 -- INSERCIONES DE CLIENTES RANDOM
 CALL TUProfe.insert_cliente('John Doe', 'Doe', 'johndoe@example.com', '1234567890', 'Cliente regular');
 CALL TUProfe.insert_cliente('Jane Smith', 'Smith', 'janesmith@example.com', '0987654321', 'Cliente preferencial');
@@ -91,9 +70,9 @@ CALL TUProfe.insert_profesor_a_materia(4, 14);
 CALL TUProfe.insert_profesor_a_materia(5, 15);
 CALL TUProfe.insert_profesor_a_materia(6, 16);
 CALL TUProfe.insert_profesor_a_materia(7, 17);
-CALL TUProfe.insert_profesor_a_materia(8, 18);
-CALL TUProfe.insert_profesor_a_materia(9, 19);
-CALL TUProfe.insert_profesor_a_materia(10, 20);
+CALL TUProfe.insert_profesor_a_materia(8, 3);
+CALL TUProfe.insert_profesor_a_materia(9, 2);
+CALL TUProfe.insert_profesor_a_materia(10, 1);
 
 
 -- INSERTAR FEEDBACKS DE PROFESORES
