@@ -40,12 +40,15 @@ def rutas_menu():
             'rutas': [
                 '/api/data/materias', # GET Y POST
                 '/api/data/materias/<id_materia>', # GET
-                '/api/data/clientes', # GET Y POST
+                '/api/data/clientes', # GET
                 '/api/data/clientes/<id_cliente>',
                 '/api/data/profesores', # GET
                 '/api/data/profesores/<id_profesor>', # GET
-                '/api/data/sendfeedback' # POST
-                '/api/data/info_profesores' # GET
+                '/api/data/sendfeedback', # POST
+                '/api/data/info_profesores', # GET
+                '/api/register', # POST, crea un cliente
+                '/api/login' # POST, devuelve JWT si los datos estan correctos
+                
             ]
         }
     })
@@ -278,8 +281,37 @@ def register():
             cursor.close()
             cnx.close()
 
-#@app.route('/api/login', methods=['POST'])# Ruta para el login
-
+@app.route('/api/login', methods=['POST'])# Ruta para el login
+def login():
+    try:
+        cnx = get_connection()
+        cursor = cnx.cursor(dictionary=True)
+        
+        if request.headers['Content-Type'] != 'application/json': # CHEQUEA QUE EL CONTENT TYPE SEA JSON
+                return jsonify({
+                'message': 'Tipo de contenido no soportado. Asegúrate de enviar JSON.','status': 'error'}), 415
+        
+        data = request.json # RECOLECTA LOS DATOS DEL JSON, Y LOS GUARDA EN VARIABLES
+        mail = data.get('mail', '') # para loguearse se necesita el mail y la password
+        password = data.get('password', '')
+        if not mail or not password:
+            return jsonify({"message": "Mail y password son requeridos"}), 400    
+        cursor.execute("select * from clientes where mail = %s", (mail,)) # busca el mail en la base de datos
+        user = cursor.fetchone() # guarda el resultado de la query en una variable
+        
+        # Si usuario es True y la password tambien es verdadera, se crea un token de acceso
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+            access_token = create_access_token(identity=mail)
+            return jsonify(access_token=access_token), 200
+        else:
+            return jsonify({"message": "Mail o password incorrectos"}), 401
+    except mysql.connector.Error as err:
+        print(f"Error : {err}")
+        return jsonify({
+            'message': 'Error al hacer login','status': 'error','data': []}), 500
+    finally:
+        cursor.close()
+        cnx.close()
 #@app.route('/protected', methods=['GET'])
 
 
