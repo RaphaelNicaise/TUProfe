@@ -6,6 +6,7 @@
 		IN in_nombre varchar(50), 
 		IN in_apellido varchar(50), 
 		IN in_mail varchar(100),
+		IN in_password varchar(255),
 		IN in_telefono varchar(30),
 		IN in_descripcion varchar(255))
 	BEGIN
@@ -13,8 +14,8 @@
 		IF EXISTS (SELECT * FROM clientes WHERE mail = in_mail) THEN
 			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El correo electrónico ya existe';
 		ELSE
-			INSERT INTO clientes (nombre,apellido,mail,telefono,descripcion) 
-			VALUES (in_nombre,in_apellido,in_mail,in_telefono,in_descripcion);
+			INSERT INTO clientes (nombre,apellido,mail,password,telefono,descripcion) 
+			VALUES (in_nombre,in_apellido,in_mail,in_password,in_telefono,in_descripcion);
 		END IF;
 	END //
 	DELIMITER ;
