@@ -47,7 +47,7 @@ def rutas_menu():
                 '/api/data/sendfeedback', # POST
                 '/api/data/info_profesores', # GET
                 '/api/register', # POST, crea un cliente
-                '/api/login' # POST, devuelve JWT si los datos estan correctos
+                    '/api/login' # POST, devuelve JWT si los datos estan correctos
                 
             ]
         }
@@ -258,14 +258,14 @@ def register():
             data = request.json # RECOLECTA LOS DATOS DEL JSON, Y LOS GUARDA EN VARIABLES
             nombre = data.get('nombre', '')
             apellido = data.get('apellido', '')
-            correo = data.get('correo', '')
+            mail = data.get('mail', '')
             password = data.get('password', '') # Obtenemos la password ingresada por el usuario
             # y despues la hasheamos con bcrypt
             password_hasheada = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             telefono = data.get('telefono', '')
             descripcion = data.get('descripcion', '')  
             # LLAMA AL PROCEDIMIENTO INSERT_CLIENTE, Y LE PASA LOS DATOS
-            cursor.callproc('insert_cliente', (nombre, apellido, correo,password_hasheada, telefono, descripcion)) 
+            cursor.callproc('insert_cliente', (nombre, apellido, mail, password_hasheada, telefono,descripcion)) 
             cnx.commit()
         
             return jsonify({
@@ -299,12 +299,16 @@ def login():
         cursor.execute("select * from clientes where mail = %s", (mail,)) # busca el mail en la base de datos
         user = cursor.fetchone() # guarda el resultado de la query en una variable
         
-        # Si usuario es True y la password tambien es verdadera, se crea un token de acceso
+        # Si usuario eexiste y la password tambien es verdadera, se crea un token de acceso
         if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
             access_token = create_access_token(identity=mail)
             return jsonify(access_token=access_token), 200
+        elif user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')) == False:
+            return jsonify({"message": "Password incorrecto"}), 401
         else:
-            return jsonify({"message": "Mail o password incorrectos"}), 401
+            return jsonify({"message": "Usuario no encontrado"}), 404
+        
+    
     except mysql.connector.Error as err:
         print(f"Error : {err}")
         return jsonify({
