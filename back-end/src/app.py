@@ -6,16 +6,17 @@ from config import SQLConfig
 
 app = Flask(__name__)
 
-dbconfig = {
+dbconfig = { # datos de la base de datos
     "database": SQLConfig.DATABASE,
     "user": SQLConfig.USER,
     "password": SQLConfig.PASSWORD,
     "host": SQLConfig.HOST,
     "port": SQLConfig.PORT,
 }
-# CREAR UN POOL DE CONEXIONES PARA EVITAR QUE SE CREEN CONEXIONES CADA VEZ QUE SE HACE UNA PETICION
+# cree un pool de conexiones, con un maximo de 5 conexiones, que se van reutilizando
+# evitando tener que crear y cerrar conexiones cada vez que se hace una peticion
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(pool_name="mypool", pool_size=5, **dbconfig)
-
+# funcion para obtener una conexion del pool
 def get_connection():
     try:
         return cnxpool.get_connection()                                       
@@ -23,10 +24,10 @@ def get_connection():
         print(f"{err}")
         return None
 
-
+# RUTAS DE LA API
 @app.route('/')
 def rutas_menu():
-    # retornar todas las rutas posibles
+    
     return jsonify({
         'message': 'Bienvenido a la API de la Universidad, la api esta funcionando correctamente',
         'status': 'success',
@@ -43,20 +44,21 @@ def rutas_menu():
             ]
         }
     })
-
+# Get de todas las materias y su informacion
 @app.route('/api/data/materias', methods=['GET'])
 def get_materias():
     try:
+        # Se crea conexion y cursor
         cnx = get_connection()
-        cursor = cnx.cursor(dictionary=True)
-        cursor.execute("select * from materias")
-        resultados = cursor.fetchall()
-    except mysql.connector.Error as err:
+        cursor = cnx.cursor(dictionary=True) # Lo que se devuelva, se transformara a un diccionario
+        cursor.execute("select * from materias") # Ejecuta la query
+        resultados = cursor.fetchall() # Guarda la query en una variable como un diccionario
+    except mysql.connector.Error as err: # Cualquier error de SQL se mostrara en la terminal
         print(f"{err}")
-    finally:
+    finally: # Se cierra el cursor y la conexion
         cursor.close()
         cnx.close()
-        if resultados:
+        if resultados: # Si existen resultados, se devuelven, si no, se devuelve un error 404 (no encontrado)
             data = {
                 'message': 'get de todas las materias','status': 'success','data': resultados} 
             return jsonify(data)
@@ -65,9 +67,10 @@ def get_materias():
                 'message': 'No se encontraron las materias', 'status': 'error','data': []}), 404
             
 
+# Get de una materia especifica
 @app.route('/api/data/materias/<id_materia>', methods=['GET'])
 def get_materia(id_materia):
-    # Aquí puedes retornar datos simulados como ejemplo
+    
     try:
         cnx = get_connection()
         cursor = cnx.cursor(dictionary=True)
@@ -87,7 +90,8 @@ def get_materia(id_materia):
             return jsonify({
                 'message': 'No se encontró la materia','status': 'error','data': []}), 404
         
-
+# Get de todos los clientes
+# y Post para ingresar un cliente con los datos pertinentes
 @app.route('/api/data/clientes', methods=['GET', 'POST'])
 def clientes():
     if request.method == 'GET':
@@ -141,7 +145,7 @@ def clientes():
             cursor.close()
             cnx.close()        
 
-            
+# Get para obtener un cliente especifico            
 @app.route('/api/data/clientes/<id_cliente>', methods=['GET'])
 def get_cliente(id_cliente):
     try:
@@ -163,7 +167,7 @@ def get_cliente(id_cliente):
             return jsonify({
                 'message': 'No se encontraron al cliente','status': 'error','data': []}), 404
 
-       
+# Get de todos los profesores
 @app.route('/api/data/profesores', methods=['GET'])
 def get_profesores():
     try:
@@ -186,7 +190,7 @@ def get_profesores():
             return jsonify({
                 'message': 'No se encontraron profesores','status': 'error','data': []}), 404
 
-    
+# Get de un profesor especifico
 @app.route('/api/data/profesores/<id_profesor>', methods=['GET'])
 def get_profesor(id_profesor):
     try:
@@ -209,7 +213,7 @@ def get_profesor(id_profesor):
                 'message': 'No se encontró al profesor','status': 'error','data': []}), 404
 
 
-# ENDPOINT PARA MANDAR FEEDBACK DE UN PROFESOR, MEDIANTE UN POST
+# endpoint para enviar feedback a un profesor, mediante un cliente. POST
 @app.route('/api/data/sendfeedback', methods=['POST'])
 def sendfeedback():
     try:
@@ -232,7 +236,8 @@ def sendfeedback():
         cnx.commit()
         return jsonify({
             'message': 'Feedback enviado exitosamente','status': 'success','data': data}), 201
-    
+    # Las validaciones se manejan en MySQL, por lo que no se manejan en el codigo
+    # Cualquier error se mostrara en la terminal, y devolvera error en e JSOB
     except mysql.connector.Error as err:
         print(f"Error al enviar feedback: {err}")
         return jsonify({
@@ -241,6 +246,7 @@ def sendfeedback():
         cursor.close()
         cnx.close()
 
+# Get de la informacion de todos los profesores, con la materia que dan
 @app.route('/api/data/info_profesores', methods=['GET'])
 def get_info_profesores():
     try:
@@ -264,6 +270,6 @@ def get_info_profesores():
                 'message': 'No se encontraron profesores','status': 'error','data': []}), 404
 
 
-
+# Ejectuar la aplicacion mediante python src/app.py si estas parado en back-end
 if __name__ == '__main__':
     app.run(debug=True)
