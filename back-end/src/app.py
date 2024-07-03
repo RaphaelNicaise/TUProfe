@@ -280,11 +280,8 @@ def register():
 
 #@app.route('/api/login', methods=['POST'])# Ruta para el login
 
-@app.route('/protected', methods=['GET'])
-@jwt_required()
-def protected():
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+#@app.route('/protected', methods=['GET'])
+
 
 # Ejectuar la aplicacion mediante python src/app.py si estas parado en back-end
 if __name__ == '__main__':
