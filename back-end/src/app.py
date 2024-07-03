@@ -1,17 +1,18 @@
 from flask import Flask, jsonify, request
 import mysql.connector
 from mysql.connector import pooling
-from config import SQLConfig
+from config import developmentConfig
+
 
 
 app = Flask(__name__)
 
 dbconfig = { # datos de la base de datos
-    "database": SQLConfig.DATABASE,
-    "user": SQLConfig.USER,
-    "password": SQLConfig.PASSWORD,
-    "host": SQLConfig.HOST,
-    "port": SQLConfig.PORT,
+    "database": developmentConfig.SQLConfig.DATABASE,
+    "user":developmentConfig.SQLConfig.USER,
+    "password": developmentConfig.SQLConfig.PASSWORD,
+    "host": developmentConfig.SQLConfig.HOST,
+    "port": developmentConfig.SQLConfig.PORT,
 }
 # cree un pool de conexiones, con un maximo de 5 conexiones, que se van reutilizando
 # evitando tener que crear y cerrar conexiones cada vez que se hace una peticion
