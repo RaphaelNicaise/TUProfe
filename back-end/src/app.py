@@ -2,10 +2,14 @@ from flask import Flask, jsonify, request
 import mysql.connector
 from mysql.connector import pooling
 from config import developmentConfig
-
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+import bcrypt
 
 
 app = Flask(__name__)
+app.config.from_object(developmentConfig)
+# inicializa el JWTManager con la app de Flask
+jwt = JWTManager(app)
 
 dbconfig = { # datos de la base de datos
     "database": developmentConfig.SQLConfig.DATABASE,
@@ -92,8 +96,8 @@ def get_materia(id_materia):
                 'message': 'No se encontró la materia','status': 'error','data': []}), 404
         
 # Get de todos los clientes
-# y Post para ingresar un cliente con los datos pertinentes
-@app.route('/api/data/clientes', methods=['GET', 'POST'])
+
+@app.route('/api/data/clientes', methods=['GET'])
 def clientes():
     if request.method == 'GET':
         try:  
@@ -115,37 +119,6 @@ def clientes():
                 return jsonify({
                     'message': 'No se encontraron clientes','status': 'error', 'data': []}), 404
                 
-    elif request.method == 'POST': # INSERTAR CLIENTE
-        try:
-            cnx = get_connection()
-            cursor = cnx.cursor(dictionary=True)
-            if request.headers['Content-Type'] != 'application/json': # CHEQUEA QUE EL CONTENT TYPE SEA JSON
-                return jsonify({
-                'message': 'Tipo de contenido no soportado. Asegúrate de enviar JSON.','status': 'error'}), 415
-                
-            data = request.json # RECOLECTA LOS DATOS DEL JSON, Y LOS GUARDA EN VARIABLES
-            nombre = data.get('nombre', '')
-            apellido = data.get('apellido', '')
-            correo = data.get('correo', '')
-            telefono = data.get('telefono', '')
-            descripcion = data.get('descripcion', '')  
-            # LLAMA AL PROCEDIMIENTO INSERT_CLIENTE, Y LE PASA LOS DATOS
-            cursor.callproc('insert_cliente', (nombre, apellido, correo, telefono, descripcion)) 
-            cnx.commit()
-        
-            return jsonify({
-                'message': 'Cliente creado exitosamente','status': 'success','data': data}), 201 
-            # CODIGO 201 DE RESPUESTA DE EXITO Y CREACION DE RECURSO
-        
-        except mysql.connector.Error as err:
-            print(f"Error al crear cliente: {err}")
-            return jsonify({
-                'message': 'Error al crear cliente','status': 'error','data': []}), 500
-        
-        finally:
-            cursor.close()
-            cnx.close()        
-
 # Get para obtener un cliente especifico            
 @app.route('/api/data/clientes/<id_cliente>', methods=['GET'])
 def get_cliente(id_cliente):
@@ -270,6 +243,48 @@ def get_info_profesores():
             return jsonify({
                 'message': 'No se encontraron profesores','status': 'error','data': []}), 404
 
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    try:
+            cnx = get_connection()
+            cursor = cnx.cursor(dictionary=True)
+            if request.headers['Content-Type'] != 'application/json': # CHEQUEA QUE EL CONTENT TYPE SEA JSON
+                return jsonify({
+                'message': 'Tipo de contenido no soportado. Asegúrate de enviar JSON.','status': 'error'}), 415
+            data = request.json # RECOLECTA LOS DATOS DEL JSON, Y LOS GUARDA EN VARIABLES
+            nombre = data.get('nombre', '')
+            apellido = data.get('apellido', '')
+            correo = data.get('correo', '')
+            password = data.get('password', '') # Obtenemos la password ingresada por el usuario
+            # y despues la hasheamos con bcrypt
+            password_hasheada = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            telefono = data.get('telefono', '')
+            descripcion = data.get('descripcion', '')  
+            # LLAMA AL PROCEDIMIENTO INSERT_CLIENTE, Y LE PASA LOS DATOS
+            cursor.callproc('insert_cliente', (nombre, apellido, correo,password_hasheada, telefono, descripcion)) 
+            cnx.commit()
+        
+            return jsonify({
+                'message': 'Cliente creado exitosamente','status': 'success','data': data}), 201 
+            # CODIGO 201 DE RESPUESTA DE EXITO Y CREACION DE RECURSO
+        
+    except mysql.connector.Error as err:
+            print(f"Error al crear cliente: {err}")
+            return jsonify({
+                'message': 'Error al crear cliente','status': 'error','data': []}), 500
+        
+    finally:
+            cursor.close()
+            cnx.close()
+
+#@app.route('/api/login', methods=['POST'])# Ruta para el login
+
+@app.route('/protected', methods=['GET'])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
 
 # Ejectuar la aplicacion mediante python src/app.py si estas parado en back-end
 if __name__ == '__main__':
