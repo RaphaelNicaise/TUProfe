@@ -27,17 +27,18 @@ CALL TUProfe.insert_materia('Legislación', '2023', 'Introducción al derecho y 
 -- INSERCIOES DE MATERIAS PLAN 2003 DE LA TUP FRBB, CON SUS RESPECTIVOS TEMAS
 
 -- INSERCIONES DE CLIENTES RANDOM
-CALL TUProfe.insert_cliente('John Doe', 'Doe', 'johndoe@example.com', '1234567890', 'Cliente regular');
-CALL TUProfe.insert_cliente('Jane Smith', 'Smith', 'janesmith@example.com', '0987654321', 'Cliente preferencial');
-CALL TUProfe.insert_cliente('Michael Johnson', 'Johnson', 'michaeljohnson@example.com', '9876543210', 'Cliente nuevo');
-CALL TUProfe.insert_cliente('Emily Williams', 'Williams', 'emilywilliams@example.com', '4567890123', 'Cliente frecuente');
-CALL TUProfe.insert_cliente('David Brown', 'Brown', 'davidbrown@example.com', '0123456789', 'Cliente corporativo');
-CALL TUProfe.insert_cliente('Sarah Jones', 'Jones', 'sarahjones@example.com', '6789012345', 'Cliente VIP');
-CALL TUProfe.insert_cliente('Daniel Davis', 'Davis', 'danieldavisAasdfa@example.com', '2345678901', 'Cliente potencial');
-CALL TUProfe.insert_cliente('Daniel Davis', 'Davis', 'danieldavis@example.com', '2345678901', 'Cliente potencial');
-CALL TUProfe.insert_cliente('Olivia Miller', 'Miller', 'oliviamiller@example.com', '9012345678', 'Cliente leal');
-CALL TUProfe.insert_cliente('James Wilson', 'Wilson', 'jameswilson@example.com', '3456789012', 'Cliente recurrente');
-CALL TUProfe.insert_cliente('Sophia Taylor', 'Taylor', 'sophiataylor@example.com', '7890123456', 'Cliente exclusivo');
+CALL TUProfe.insert_cliente('John Doe', 'Doe', 'johndoe@example.com', 'password1', '1234567890', 'Cliente regular');
+CALL TUProfe.insert_cliente('Jane Smith', 'Smith', 'janesmith@example.com', 'password2', '0987654321', 'Cliente preferencial');
+CALL TUProfe.insert_cliente('Michael Johnson', 'Johnson', 'michaeljohnson@example.com', 'password3', '9876543210', 'Cliente nuevo');
+CALL TUProfe.insert_cliente('Emily Williams', 'Williams', 'emilywilliams@example.com', 'password4', '4567890123', 'Cliente frecuente');
+CALL TUProfe.insert_cliente('David Brown', 'Brown', 'davidbrown@example.com', 'password5', '0123456789', 'Cliente corporativo');
+CALL TUProfe.insert_cliente('Sarah ', 'Jones', 'sarahjones@example.com', 'password6', '6789012345', 'Cliente VIP');
+CALL TUProfe.insert_cliente('Daniel Davis', 'Davis', 'danieldavisAasdfa@example.com', 'password7', '2345678901', 'Cliente potencial');
+CALL TUProfe.insert_cliente('Daniel Davis', 'Davis', 'danieldavis@example.com', 'password8', '2345678901', 'Cliente potencial');
+CALL TUProfe.insert_cliente('Olivia Miller', 'Miller', 'oliviamiller@example.com', 'password9', '9012345678', 'Cliente leal');
+CALL TUProfe.insert_cliente('James Wilson', 'Wilson', 'jameswilson@example.com', 'password10', '3456789012', 'Cliente recurrente');
+CALL TUProfe.insert_cliente('Sophia Taylor', 'Taylor', 'sophiataylor@example.com', 'password11', '7890123456', 'Cliente exclusivo');
+
 
 -- INSERCIONES DE PROFESORES RANDOM
 -- CALL TUProfe.insert_profesor((nombre,apellido,mail,telefono,sobre_mi,RRSS)); 10 asi
