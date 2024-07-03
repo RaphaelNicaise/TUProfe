@@ -7,14 +7,15 @@ CREATE VIEW calificaciones_profesores AS (
     GROUP BY id_profesor
 );
 
-DROP VIEW IF EXISTS info_profesores_materias;
-CREATE VIEW info_profesores_materias AS (
+DROP VIEW IF EXISTS info_profesores;
+CREATE VIEW info_profesores AS (
     SELECT pm.id_materia,pm.id_profesor,m.nombre_materia,m.plan,
 		   concat(p.nombre,' ',p.apellido) as Profesor,
-		   p.mail,p.telefono,p.sobre_mi,p.RRSS
+		   p.mail,p.telefono,p.sobre_mi,p.RRSS,fp.calificacion_gral
 	FROM profesores_materias pm
 	JOIN materias m ON m.id_materia = pm.id_materia
 	JOIN profesores p ON p.id_profesor = pm.id_profesor
+	LEFT JOIN feedbackprofesores fp ON fp.id_profesor = pm.id_profesor
 );
 
 
