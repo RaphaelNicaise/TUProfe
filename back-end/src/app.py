@@ -39,6 +39,7 @@ def rutas_menu():
                 '/api/data/profesores', # GET
                 '/api/data/profesores/<id_profesor>', # GET
                 '/api/data/sendfeedback' # POST
+                '/api/data/info_profesores' # GET
             ]
         }
     })
@@ -240,6 +241,29 @@ def sendfeedback():
         cursor.close()
         cnx.close()
 
-# 
+@app.route('/api/data/info_profesores', methods=['GET'])
+def get_info_profesores():
+    try:
+        cnx = get_connection()
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute('select * from info_profesores')
+        resultados = cursor.fetchall()
+    except mysql.connector.Error as err:
+        print(f"{err}")
+    finally:
+        cursor.close()
+        cnx.close()
+        if resultados:
+            data = {
+                'message': 'Get de la informacion de todos los profesores',
+                'status': 'success',
+                'data': resultados}
+            return jsonify(data)
+        else:
+            return jsonify({
+                'message': 'No se encontraron profesores','status': 'error','data': []}), 404
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
