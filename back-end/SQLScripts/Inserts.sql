@@ -1,3 +1,5 @@
+delete from feedbackprofesores;
+delete from profesores_materias;
 delete from materias;
 delete from clientes;
 delete from profesores;
