@@ -14,6 +14,7 @@ create table if not exists clientes (
 	nombre varchar(50) not null,
 	apellido varchar(50) not null,
 	mail varchar(100) not null,
+    password varchar(255) not null, -- Se van a guardar hasheadas
 	telefono varchar(30),
 	descripcion varchar(255),
     fecha_inscripcion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
