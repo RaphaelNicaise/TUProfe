@@ -1,0 +1,358 @@
+openapi: 3.0.0
+info:
+  title: "TUProfe API"
+  description: "API para la Universidad - Documentación"
+  version: "1.0.0"
+  
+paths:
+  /:
+    get:
+      summary: "Api en funcionamiento"
+      description: "EndPoints disponibles en la API en /api/docs"
+      responses:
+        '200':
+          description: "Lista de rutas"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  status:
+                    type: "string"
+
+
+  /api/data/materias:
+    get:
+      summary: "Obtener todas las materias"
+      description: "Devuelve información de todas las materias disponibles."
+      responses:
+        '200':
+          description: "Lista de materias"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  status:
+                    type: "string"
+                  data:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        id_materia:
+                          type: "integer"
+                        nombre_materia:
+                          type: "string"
+
+  /api/data/materias/{id_materia}:
+    get:
+      summary: "Obtener una materia específica"
+      description: "Devuelve información detallada de una materia específica."
+      parameters:
+        - name: "id_materia"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        '200':
+          description: "Información de la materia"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  status:
+                    type: "string"
+                  data:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        id_materia:
+                          type: "integer"
+                        nombre_materia:
+                          type: "string"
+
+  /api/data/clientes:
+    get:
+      summary: "Obtener todos los clientes"
+      description: "Devuelve información de todos los clientes registrados."
+      responses:
+        '200':
+          description: "Lista de clientes"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  status:
+                    type: "string"
+                  data:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        id_cliente:
+                          type: "integer"
+                        nombre:
+                          type: "string"
+
+  /api/data/clientes/{id_cliente}:
+    get:
+      summary: "Obtener un cliente específico"
+      description: "Devuelve información detallada de un cliente específico."
+      parameters:
+        - name: "id_cliente"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        '200':
+          description: "Información del cliente"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  status:
+                    type: "string"
+                  data:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        id_cliente:
+                          type: "integer"
+                        nombre:
+                          type: "string"
+
+  /api/data/profesores:
+    get:
+      summary: "Obtener todos los profesores"
+      description: "Devuelve información de todos los profesores registrados."
+      responses:
+        '200':
+          description: "Lista de profesores"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  status:
+                    type: "string"
+                  data:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        id_profesor:
+                          type: "integer"
+                        nombre_profesor:
+                          type: "string"
+
+  /api/data/profesores/{id_profesor}:
+    get:
+      summary: "Obtener un profesor específico"
+      description: "Devuelve información detallada de un profesor específico."
+      parameters:
+        - name: "id_profesor"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        '200':
+          description: "Información del profesor"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  status:
+                    type: "string"
+                  data:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        id_profesor:
+                          type: "integer"
+                        nombre_profesor:
+                          type: "string"
+
+  /api/data/sendfeedback:
+    post:
+      summary: "Enviar feedback"
+      description: "Envía feedback de un cliente a un profesor."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                id_profesor:
+                  type: "integer"
+                id_cliente:
+                  type: "integer"
+                comentario:
+                  type: "string"
+                claridad_profesor_calif:
+                  type: "integer"
+                precio_profesor_calif:
+                  type: "integer"
+                disponibilidad_profesor_calif:
+                  type: "integer"
+      responses:
+        '201':
+          description: "Feedback enviado exitosamente"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  status:
+                    type: "string"
+                  data:
+                    type: "object"
+                    properties:
+                      id_profesor:
+                        type: "integer"
+                      id_cliente:
+                        type: "integer"
+                      comentario:
+                        type: "string"
+
+  /api/data/info_profesores:
+    get:
+      summary: "Obtener información de todos los profesores"
+      description: "Devuelve información detallada de todos los profesores."
+      responses:
+        '200':
+          description: "Información de los profesores"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  status:
+                    type: "string"
+                  data:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        id_profesor:
+                          type: "integer"
+                        nombre_profesor:
+                          type: "string"
+
+  /api/register:
+    post:
+      summary: "Registrar cliente"
+      description: "Registra un nuevo cliente en la plataforma."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                nombre:
+                  type: "string"
+                apellido:
+                  type: "string"
+                mail:
+                  type: "string"
+                password:
+                  type: "string"
+                telefono:
+                  type: "string"
+                descripcion:
+                  type: "string"
+      responses:
+        '201':
+          description: "Cliente creado exitosamente"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                  status:
+                    type: "string"
+                  data:
+                    type: "object"
+                    properties:
+                      nombre:
+                        type: "string"
+                      apellido:
+                        type: "string"
+                      mail:
+                        type: "string"
+
+  /api/login:
+    post:
+      summary: "Iniciar sesión"
+      description: "Inicia sesión de un cliente existente."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                mail:
+                  type: "string"
+                password:
+                  type: "string"
+      responses:
+        '200':
+          description: "Inicio de sesión exitoso"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  access_token:
+                    type: "string"
+        '401':
+          description: "Password incorrecto"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+        '404':
+          description: "Usuario no encontrado"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"

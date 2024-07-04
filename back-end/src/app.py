@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 import mysql.connector
 from mysql.connector import pooling
 from config import developmentConfig
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 import bcrypt
+from flask_swagger_ui import get_swaggerui_blueprint
 
 
 app = Flask(__name__)
@@ -29,28 +30,23 @@ def get_connection():
         print(f"{err}")
         return None
 
+SWAGGER_URL = '/api/docs'
+API_URL = '/static/swagger.yaml'
+swaggerui_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_URL, config={'app_name': "TUProfe API"})
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+
+@app.route("/static/<path:path>")
+def send_static(path):
+    return send_from_directory("static", path)
+
+
 # RUTAS DE LA API
 @app.route('/')
 def rutas_menu():
     
     return jsonify({
         'message': 'Bienvenido a la API de la Universidad, la api esta funcionando correctamente',
-        'status': 'success',
-        'data': {
-            'rutas': [
-                '/api/data/materias', # GET Y POST
-                '/api/data/materias/<id_materia>', # GET
-                '/api/data/clientes', # GET
-                '/api/data/clientes/<id_cliente>',
-                '/api/data/profesores', # GET
-                '/api/data/profesores/<id_profesor>', # GET
-                '/api/data/sendfeedback', # POST
-                '/api/data/info_profesores', # GET
-                '/api/register', # POST, crea un cliente
-                    '/api/login' # POST, devuelve JWT si los datos estan correctos
-                
-            ]
-        }
+        'status': 'success' 
     })
 # Get de todas las materias y su informacion
 @app.route('/api/data/materias', methods=['GET'])
