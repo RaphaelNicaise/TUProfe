@@ -5,7 +5,7 @@ from config import developmentConfig
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 import bcrypt
 from flask_swagger_ui import get_swaggerui_blueprint
-
+import re
 
 app = Flask(__name__)
 app.config.from_object(developmentConfig)
@@ -256,6 +256,14 @@ def register():
             apellido = data.get('apellido', '')
             mail = data.get('mail', '')
             password = data.get('password', '') # Obtenemos la password ingresada por el usuario
+            
+            
+            if not re.match(r"[^@]+@[^@]+\.[^@]+", mail): # valida que el mail sea valido
+                return jsonify({ "message": "Mail invalido" }), 400
+            
+            if len(password) < 8: # valida que la contrasenia sea de 8 caracteres o mas
+                return jsonify({ "message": "La contraseña debe tener al menos 8 caracteres" }), 400
+            
             # y despues la hasheamos con bcrypt
             password_hasheada = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             telefono = data.get('telefono', '')
