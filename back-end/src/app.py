@@ -208,13 +208,13 @@ def sendfeedback():
         cursor.callproc('sendfeedback', (id_profesor, id_cliente, comentario, claridad_profesor_calif, precio_profesor_calif, disponibilidad_profesor_calif))    
         cnx.commit()
         return jsonify({
-            'message': 'Feedback enviado exitosamente','status': 'success','data': data}), 201
+            'message': 'Feedback enviado exitosamente','status': 'success'}), 201
     # Las validaciones se manejan en MySQL, por lo que no se manejan en el codigo
     # Cualquier error se mostrara en la terminal, y devolvera error en e JSOB
     except mysql.connector.Error as err:
-        print(f"Error al enviar feedback: {err}")
+        print(f"Error:  {err}")
         return jsonify({
-            'message': 'Error al enviar feedback','status': 'error','data': []}), 500
+            'message': str(err),'status': 'error'}), 500
     finally:
         cursor.close()
         cnx.close()
@@ -265,13 +265,13 @@ def register():
             cnx.commit()
         
             return jsonify({
-                'message': 'Cliente creado exitosamente','status': 'success','data': data}), 201 
+                'message': 'Cliente creado exitosamente','status': 'success'}), 201 
             # CODIGO 201 DE RESPUESTA DE EXITO Y CREACION DE RECURSO
         
     except mysql.connector.Error as err:
-            print(f"Error al crear cliente: {err}")
+            print(f"Error: {err}")
             return jsonify({
-                'message': 'Error al crear cliente','status': 'error','data': []}), 500
+                'message': str(err),'status': 'error'}), 500
         
     finally:
             cursor.close()
@@ -308,10 +308,11 @@ def login():
     except mysql.connector.Error as err:
         print(f"Error : {err}")
         return jsonify({
-            'message': 'Error al hacer login','status': 'error','data': []}), 500
+            'message': str(err),'status': 'error'}), 500
     finally:
         cursor.close()
         cnx.close()
+        
 #@app.route('/protected', methods=['GET'])
 
 

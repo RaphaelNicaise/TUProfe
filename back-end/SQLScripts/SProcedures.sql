@@ -51,10 +51,15 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El cliente no existe';
     ELSE
         -- insertar esa informacion
-        INSERT INTO feedbackProfesores (id_profesor, id_cliente, comentario, calificacion_gral, claridad_profesor_calif, precio_profesor_calif, disponibilidad_profesor_calif)
-        VALUES (in_id_profesor, in_id_cliente, in_comentario, 
-		calcular_calificacion(in_claridad_profesor_calif, in_precio_profesor_calif, in_disponibilidad_profesor_calif),
-		in_claridad_profesor_calif, in_precio_profesor_calif, in_disponibilidad_profesor_calif);
+		-- valida que el cliente ya no le haya dado feedback al profesor
+		IF EXISTS (SELECT * FROM feedbackProfesores WHERE id_profesor = in_id_profesor AND id_cliente = in_id_cliente) THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El cliente ya ha dado feedback a este profesor';
+		ELSE
+			INSERT INTO feedbackProfesores (id_profesor, id_cliente, comentario, calificacion_gral, claridad_profesor_calif, precio_profesor_calif, disponibilidad_profesor_calif)
+			VALUES (in_id_profesor, in_id_cliente, in_comentario, 
+			calcular_calificacion(in_claridad_profesor_calif, in_precio_profesor_calif, in_disponibilidad_profesor_calif),
+			in_claridad_profesor_calif, in_precio_profesor_calif, in_disponibilidad_profesor_calif);
+		END IF;
     END IF;
 END //
 DELIMITER ;
